@@ -25,7 +25,15 @@ pipeline {
         stage('Applying the Infra') {
             steps {
                 echo 'terraform action is -->${action}'
-                sh 'terraform ${action} -auto-approve tfplan'
+                script {
+                    if ("${action}" == "apply") {
+                        sh 'terraform apply -auto-approve tfplan'
+                    }
+                    else if ("${action}" == "destroy") {
+                        sh 'terraform destroy -auto-approve'
+                    }
+                
+                }
             }
         }
     }
